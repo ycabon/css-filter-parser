@@ -209,7 +209,7 @@
         peg$c29 = function(angle) {
             return {
               type: "hue-rotate",
-              angle
+              angle: angle
             };
           },
         peg$c30 = peg$otherExpectation("invert()"),

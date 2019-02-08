@@ -236,7 +236,7 @@ hueRotate "hue-rotate()"
   = _ "hue-rotate(" _ angle:angle _ ")" _ {
     return {
       type: "hue-rotate",
-      angle
+      angle: angle
     };
   }
 
