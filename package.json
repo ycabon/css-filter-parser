@@ -1,0 +1,29 @@
+{
+  "name": "css-filter-parser",
+  "version": "1.0.0",
+  "description": "A JavaScript parser for CSS filter property",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ycabon/css-filter-parser.git"
+  },
+  "keywords": [
+    "css",
+    "filter",
+    "parser",
+    "peg.js"
+  ],
+  "author": "Yann Cabon",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ycabon/css-filter-parser/issues"
+  },
+  "homepage": "https://github.com/ycabon/css-filter-parser#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
