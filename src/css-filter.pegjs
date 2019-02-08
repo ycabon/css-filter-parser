@@ -183,35 +183,98 @@ filterFunction
   / saturate
   / sepia
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur
 blur "blur()"
-  = _ "blur(" _ length:length _ ")" _ { return { type: "blur", length }; }
+  = _ "blur(" _ radius:length _ ")" _ {
+    return {
+      type: "blur",
+      radius: radius
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/brightness
 brightness "brightness()"
-  = _ "brightness(" _ value:numberPercentage _ ")" _ { return { type: "brightness", value }; }
+  = _ "brightness(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "brightness",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/contrast
 contrast "contrast()"
-  = _ "contrast(" _ value:numberPercentage _ ")" _ { return { type: "contrast", value }; }
+  = _ "contrast(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "contrast",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/drop-shadow
 dropShadow "drop-shadow()"
-  = _ "drop-shadow(" _ offsetX:length _ offsetY:length _ blurRadius:length? _ color:color? _ ")" _ { return { type: "drop-shadow", offsetX, offsetY, blurRadius, color }; }
+  = _ "drop-shadow(" _ offsetX:length _ offsetY:length _ blurRadius:length? _ color:color? _ ")" _ {
+    return {
+      type: "drop-shadow",
+      offsetX: offsetX,
+      offsetY: offsetY,
+      blurRadius: blurRadius,
+      color: color
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/grayscale
 grayscale "grayscale()"
-  = _ "grayscale(" _ value:numberPercentage _ ")" _ { return { type: "grayscale", value }; }
+  = _ "grayscale(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "grayscale",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/hue-rotate
 hueRotate "hue-rotate()"
-  = _ "hue-rotate(" _ angle:angle _ ")" _ { return { type: "hue-rotate", angle }; }
+  = _ "hue-rotate(" _ angle:angle _ ")" _ {
+    return {
+      type: "hue-rotate",
+      angle
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/invert
 invert "invert()"
-  = _ "invert(" _ value:numberPercentage _ ")" _ { return { type: "invert", value }; }
+  = _ "invert(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "invert",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/opacity
 opacity "opacity()"
-  = _ "opacity(" _ value:numberPercentage _ ")" _ { return { type: "opacity", value }; }
+  = _ "opacity(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "opacity",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/saturate
 saturate "saturate()"
-  = _ "saturate(" _ value:numberPercentage _ ")" _ { return { type: "saturate", value }; }
+  = _ "saturate(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "saturate",
+      amount: amount
+    };
+  }
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/sepia
 sepia "sepia()"
-  = _ "sepia(" _ value:numberPercentage _ ")" _ { return { type: "sepia", value }; }
+  = _ "sepia(" _ amount:numberPercentage _ ")" _ {
+    return {
+      type: "sepia",
+      amount: amount
+    };
+  }
 
 numberPercentage "<number-percentage>"
   = percentage

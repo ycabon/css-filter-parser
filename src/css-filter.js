@@ -158,43 +158,96 @@
         peg$c6 = peg$literalExpectation("blur(", false),
         peg$c7 = ")",
         peg$c8 = peg$literalExpectation(")", false),
-        peg$c9 = function(length) { return { type: "blur", length }; },
+        peg$c9 = function(radius) {
+            return {
+              type: "blur",
+              radius: radius
+            };
+          },
         peg$c10 = peg$otherExpectation("brightness()"),
         peg$c11 = "brightness(",
         peg$c12 = peg$literalExpectation("brightness(", false),
-        peg$c13 = function(value) { return { type: "brightness", value }; },
+        peg$c13 = function(amount) {
+            return {
+              type: "brightness",
+              amount: amount
+            };
+          },
         peg$c14 = peg$otherExpectation("contrast()"),
         peg$c15 = "contrast(",
         peg$c16 = peg$literalExpectation("contrast(", false),
-        peg$c17 = function(value) { return { type: "contrast", value }; },
+        peg$c17 = function(amount) {
+            return {
+              type: "contrast",
+              amount: amount
+            };
+          },
         peg$c18 = peg$otherExpectation("drop-shadow()"),
         peg$c19 = "drop-shadow(",
         peg$c20 = peg$literalExpectation("drop-shadow(", false),
-        peg$c21 = function(offsetX, offsetY, blurRadius, color) { return { type: "drop-shadow", offsetX, offsetY, blurRadius, color }; },
+        peg$c21 = function(offsetX, offsetY, blurRadius, color) {
+            return {
+              type: "drop-shadow",
+              offsetX: offsetX,
+              offsetY: offsetY,
+              blurRadius: blurRadius,
+              color: color
+            };
+          },
         peg$c22 = peg$otherExpectation("grayscale()"),
         peg$c23 = "grayscale(",
         peg$c24 = peg$literalExpectation("grayscale(", false),
-        peg$c25 = function(value) { return { type: "grayscale", value }; },
+        peg$c25 = function(amount) {
+            return {
+              type: "grayscale",
+              amount: amount
+            };
+          },
         peg$c26 = peg$otherExpectation("hue-rotate()"),
         peg$c27 = "hue-rotate(",
         peg$c28 = peg$literalExpectation("hue-rotate(", false),
-        peg$c29 = function(angle) { return { type: "hue-rotate", angle }; },
+        peg$c29 = function(angle) {
+            return {
+              type: "hue-rotate",
+              angle
+            };
+          },
         peg$c30 = peg$otherExpectation("invert()"),
         peg$c31 = "invert(",
         peg$c32 = peg$literalExpectation("invert(", false),
-        peg$c33 = function(value) { return { type: "invert", value }; },
+        peg$c33 = function(amount) {
+            return {
+              type: "invert",
+              amount: amount
+            };
+          },
         peg$c34 = peg$otherExpectation("opacity()"),
         peg$c35 = "opacity(",
         peg$c36 = peg$literalExpectation("opacity(", false),
-        peg$c37 = function(value) { return { type: "opacity", value }; },
+        peg$c37 = function(amount) {
+            return {
+              type: "opacity",
+              amount: amount
+            };
+          },
         peg$c38 = peg$otherExpectation("saturate()"),
         peg$c39 = "saturate(",
         peg$c40 = peg$literalExpectation("saturate(", false),
-        peg$c41 = function(value) { return { type: "saturate", value }; },
+        peg$c41 = function(amount) {
+            return {
+              type: "saturate",
+              amount: amount
+            };
+          },
         peg$c42 = peg$otherExpectation("sepia()"),
         peg$c43 = "sepia(",
         peg$c44 = peg$literalExpectation("sepia(", false),
-        peg$c45 = function(value) { return { type: "sepia", value }; },
+        peg$c45 = function(amount) {
+            return {
+              type: "sepia",
+              amount: amount
+            };
+          },
         peg$c46 = peg$otherExpectation("<number-percentage>"),
         peg$c47 = peg$otherExpectation("<integer>"),
         peg$c48 = /^[0-9]/,
