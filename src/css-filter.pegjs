@@ -76,9 +76,9 @@ angle "<angle>"
 
 angleUnit "<unit>"
   = "deg" { return 1; }
-  / "grad" { return 1; }
-  / "rad" { return 1; }
-  / "turn" { return 1; }
+  / "grad" { return 360 / 400; }
+  / "rad" { return 180 / Math.PI; }
+  / "turn" { return 1 / 360; }
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/length
 length "<length>"
