@@ -4,7 +4,8 @@
   "description": "A JavaScript parser for CSS filter property",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pegjs --export-var CSSFilterParser --format umd src/css-filter.pegjs"
   },
   "repository": {
     "type": "git",
