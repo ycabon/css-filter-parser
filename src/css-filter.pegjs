@@ -14,7 +14,7 @@ filterFunction
   = blur
   / brightness
   / contrast
-//   / dropShadow
+  / dropShadow
   / grayscale
   / hueRotate
   / invert
@@ -31,8 +31,8 @@ brightness "brightness()"
 contrast "contrast()"
   = _ "contrast(" _ value:numberPercentage _ ")" _ { return { type: "contrast", value } }
 
-// dropShadow "drop-shadow()"
-//   = _ "drop-shadow(" _ length _ length _ length? _ color? _ ")" _ { return { type: "drop-shadow" } }
+dropShadow "drop-shadow()"
+  = _ "drop-shadow(" _ length _ length _ length? _ color? _ ")" _ { return { type: "drop-shadow" } }
 
 grayscale "grayscale()"
   = _ "grayscale(" _ value:numberPercentage _ ")" _ { return { type: "grayscale", value } }
@@ -52,22 +52,22 @@ saturate "saturate()"
 sepia "sepia()"
   = _ "sepia(" _ value:numberPercentage _ ")" _ { return { type: "sepia", value } }
  
-numberPercentage
+numberPercentage "<number-percentage>"
   = number
   / percentage
  
 // https://developer.mozilla.org/en-US/docs/Web/CSS/number
 number "<number>"
-  = [0-9]+ { return parseInt(text(), 10); }
-  / [0-9]+ "." [0-9]+ { return parseFloat(text()); }
+  = [0-9]+ { return parseInt(text(), 10) }
+  / [0-9]+ "." [0-9]+ { return parseFloat(text()) }
 
-signedNumber "<number>"
-  = "+"? value:number { return value }
+signedNumber "<signedNumber>"
+  = "+" ? value:number { return value }
   / "-" value:number { return -value }
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/percentage
 percentage "<percentage>"
-  = value:number"%" { return value / 100; }
+  = value:number "%" { return value / 100 }
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/angle
 angle "<angle>"
