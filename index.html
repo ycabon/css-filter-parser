@@ -83,7 +83,7 @@
         result = CSSFilterParser.parse(input.value);
       }
       catch (error) {
-        output.textContent = "";
+        output.value = "";
         status.classList.add("error");
         status.classList.remove("ok");
         status.innerText = error.message;
