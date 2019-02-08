@@ -361,10 +361,10 @@ namedColor "<named-color>"
     var color = text();
 
     if (!namedColorSet.has(color)) {
-      error(`unknown color "${color}"`);
+      error("unknown color \"" + color + "\"");
     }
 
     // return the color with the alpha
-    return [...colorMap[color], 1];
+    return colorMap[color].concat(1);
   }
 
