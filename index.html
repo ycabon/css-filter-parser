@@ -1,9 +1,102 @@
 
 <html>
 <script src="./src/css-filter.js"></script>
+<style>
+  html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+  }
+
+  #app {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #app > * {
+    width: 50%;
+    margin-top: 10px;
+  }
+
+  #app > label {
+    margin-top: 40px;
+  }
+
+  #input {
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  #status {
+    border: 1px solid gray;
+    border-radius: 4px;
+    min-height: 20px;
+    padding: 20px;
+  }
+  #status.error {
+    border: 1px solid orangered;
+    background: orange;
+  }
+  #status.ok {
+    border: 1px solid green;
+    background: lightgreen;
+  }
+
+  #output {
+    flex-grow: 1;
+  }
+</style>
 <body>
-<script>
-    console.log(CSSFilterParser.parse("blur(2px) contrast(50%)"));
-</script>
+  <div id="app">
+    <label for="input">CSS Filter</label>
+    <input id="input" type="text" onchange="update()" oninput="update()" value="blur(20pt) contrast(40%)">
+    <label for="status">Parsing status</label>
+    <div id="status"></div>
+    <label for="output">Parsing result</label>
+    <textarea id="output"></textarea>
+  </div>
+  <script>
+    const input = document.getElementById("input");
+    const status = document.getElementById("status");
+    const output = document.getElementById("output");
+
+    function update() {
+      let result;
+
+      try {
+        result = CSSFilterParser.parse(input.value);
+      }
+      catch (error) {
+        output.textContent = "";
+        status.classList.add("error");
+        status.classList.remove("ok");
+        status.innerText = error.message;
+        return;
+      }
+
+      status.classList.remove("error");
+      status.classList.add("ok");
+      status.innerText = "Parsed succesfully";
+      output.value = JSON.stringify(result, null, 2);
+    }
+
+    update();
+  </script>
 </body>
 </html>
