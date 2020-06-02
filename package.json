@@ -23,8 +23,11 @@
     "url": "https://github.com/ycabon/css-filter-parser/issues"
   },
   "homepage": "https://github.com/ycabon/css-filter-parser#readme",
-  "dependencies": {},
+  "dependencies": {
+    "chevrotain": "^7.0.1"
+  },
   "devDependencies": {
-    "pegjs": "^0.10.0"
+    "pegjs": "^0.10.0",
+    "typescript": "^3.9.3"
   }
 }
