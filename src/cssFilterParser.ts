@@ -183,7 +183,7 @@ class CSSFilterParser extends EmbeddedActionsParser {
 
     const $ = this;
 
-    $.RULE<CSSFilterParsingResults>("cssFilter", () => {
+    this.parse = $.RULE<CSSFilterParsingResults>("cssFilter", () => {
       const filters: CSSFilterParsingResults = [];
 
       $.OR([
@@ -207,6 +207,7 @@ class CSSFilterParser extends EmbeddedActionsParser {
       { ALT: () => $.SUBRULE(hueRotateRule) },
       { ALT: () => $.SUBRULE(invertRule) },
       { ALT: () => $.SUBRULE(opacityRule) },
+      { ALT: () => $.SUBRULE(saturateRule) },
       { ALT: () => $.SUBRULE(sepiaRule) }
     ]))
 
@@ -323,6 +324,19 @@ class CSSFilterParser extends EmbeddedActionsParser {
       };
     });
 
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/saturate
+    const saturateRule = $.RULE<SaturateResult>("saturate", () => {
+      $.CONSUME(Saturate);
+      $.CONSUME(LeftParenthesis);
+      const amount = $.SUBRULE(numberOrPercent);
+      $.CONSUME(RightParenthesis);
+
+      return {
+        type: "saturate",
+        amount
+      };
+    });
+
     // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/sepia
     const sepiaRule = $.RULE<SepiaResult>("sepia", () => {
       $.CONSUME(Sepia);
@@ -395,4 +409,23 @@ class CSSFilterParser extends EmbeddedActionsParser {
     this.performSelfAnalysis();
   }
 
+  parse:  (idxInCallingRule?: number, ...args: any[]) => CSSFilterParsingResults;
+
+}
+
+const parser = new CSSFilterParser();
+
+export default function parse(text: string): CSSFilterParsingResults {
+  const lexResult = CSSFilterLexer.tokenize(text)
+
+  // setting a new input will RESET the parser instance's state.
+  parser.input = lexResult.tokens
+
+  const result = parser.parse();
+
+  if (parser.errors) {
+    throw new Error("parsing failed.")
+  }
+
+  return result
 }
