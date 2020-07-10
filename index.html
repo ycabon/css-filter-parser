@@ -1,6 +1,5 @@
 
 <html>
-<script src="./src/css-filter.js"></script>
 <style>
   html, body {
     width: 100%;
@@ -71,32 +70,44 @@
     <label for="output">Parsing result</label>
     <textarea id="output"></textarea>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
   <script>
-    const input = document.getElementById("input");
-    const status = document.getElementById("status");
-    const output = document.getElementById("output");
-
-    function update() {
-      let result;
-
-      try {
-        result = CSSFilterParser.parse(input.value);
+    require.config({
+      baseUrl: ".",
+      paths: {
+        chevrotain: "node_modules/chevrotain/lib/chevrotain.min"
       }
-      catch (error) {
-        output.value = "";
-        status.classList.add("error");
-        status.classList.remove("ok");
-        status.innerText = error.message;
-        return;
+    });
+
+    require(["src/cssFilterParser"], ({ parse, getContentAssistSuggestions }) => {
+
+      const input = document.getElementById("input");
+      const status = document.getElementById("status");
+      const output = document.getElementById("output");
+
+      window.update = function update() {
+        let result;
+
+        try {
+          console.log(getContentAssistSuggestions(input.value));
+          result = parse(input.value);
+        }
+        catch (error) {
+          output.value = "";
+          status.classList.add("error");
+          status.classList.remove("ok");
+          status.innerText = error.message;
+          return;
+        }
+
+        status.classList.remove("error");
+        status.classList.add("ok");
+        status.innerText = "Parsed succesfully";
+        output.value = JSON.stringify(result, null, 2);
       }
 
-      status.classList.remove("error");
-      status.classList.add("ok");
-      status.innerText = "Parsed succesfully";
-      output.value = JSON.stringify(result, null, 2);
-    }
-
-    update();
+      update();
+    });
   </script>
 </body>
 </html>
