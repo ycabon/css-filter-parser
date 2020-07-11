@@ -159,6 +159,47 @@
   };
 
   var namedColorSet = new Set(Object.keys(colorMap));
+
+  function hue2rgb(m1, m2, h) {
+    if (h < 0) {
+      ++h;
+    }
+
+    if (h > 1) {
+      --h;
+    }
+
+    var h6 = 6 * h;
+
+    if (h6 < 1) {
+      return m1 + (m2 - m1) * h6;
+    }
+
+    if (2 * h < 1) {
+      return m2;
+    }
+
+    if (3 * h < 2) {
+      return m1 + (m2 - m1) * (2 / 3 - h) * 6;
+    }
+
+    return m1;
+  }
+
+  function hsla2rgb(h, s, l, a) {
+    // calculate rgb according to the algorithm
+    // recommended by the CSS3 Color Module
+    var H = ((h % 360 + 360) % 360) / 360;
+    var m2 = l < 0.5 ? l * (s + 1) : l + s - l * s;
+    var m1 = 2 * l - m2;
+
+    return [
+      hue2rgb(m1, m2, H + 1 / 3) * 256,
+      hue2rgb(m1, m2, H) * 256,
+      hue2rgb(m1, m2, H - 1 / 3) * 256,
+      a
+    ];
+  }
 }
 
 start
@@ -172,7 +213,8 @@ filterFunctionList
   = filterFunction+
 
 filterFunction
-  = blur
+  = bloom
+  / blur
   / brightness
   / contrast
   / dropShadow
@@ -180,8 +222,20 @@ filterFunction
   / hueRotate
   / invert
   / opacity
+  / radialBlur
   / saturate
   / sepia
+
+// https://docs.unrealengine.com/en-US/Engine/Rendering/PostProcessEffects/Bloom/index.html
+bloom "bloom()"
+  = _ "bloom(" _ radius:length _ strength:numberPercentage? _ threshold:numberPercentage? _ ")" _ {
+    return {
+      type: "bloom",
+      radius: radius,
+      strength: strength || 0,
+      threshold: threshold || 0
+    };
+  }
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur
 blur "blur()"
@@ -211,13 +265,16 @@ contrast "contrast()"
   }
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/drop-shadow
+// Plus: inset
 dropShadow "drop-shadow()"
-  = _ "drop-shadow(" _ offsetX:length _ offsetY:length _ blurRadius:length? _ color:color? _ ")" _ {
+  = _ "drop-shadow(" _ inset:"inset"? _ offsetX:length _ offsetY:length _ blurRadius:length? _ spreadRadius:length? _ color:color? _ ")" _ {
     return {
       type: "drop-shadow",
+      inset: !!inset,
       offsetX: offsetX,
       offsetY: offsetY,
       blurRadius: blurRadius,
+      spreadRadius: spreadRadius,
       color: color
     };
   }
@@ -255,6 +312,14 @@ opacity "opacity()"
     return {
       type: "opacity",
       amount: amount
+    };
+  }
+
+radialBlur "radial-blur()"
+  = _ "radial-blur(" _ radius:length _ ")" _ {
+    return {
+      type: "radial-blur",
+      radius: radius
     };
   }
 
@@ -322,7 +387,7 @@ lengthUnit
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/color
 color
-  = "#" r:(hexdigit hexdigit) g:(hexdigit hexdigit) b:(hexdigit hexdigit) {
+  = "#" r:(hexdigit hexdigit) g:(hexdigit hexdigit) b:(hexdigit hexdigit) a:(hexdigit hexdigit)? {
     return [
       parseInt(r.join(""), 16),
       parseInt(g.join(""), 16),
@@ -336,17 +401,26 @@ color
       parseInt([b, b].join(""), 16)
     ];
   }
-  / "rgba(" _ r:percentage _ "," _ g:percentage _ "," _ b:percentage _ ("," _ a:numberPercentage _)? ")" {
+  / "rgba(" _ r:percentage _ "," _ g:percentage _ "," _ b:percentage _ "," _ a:numberPercentage _ ")" {
     return [r * 255, g * 255, b * 255, a];
   }
-  / "rgba(" _ r:number _ "," _ g:number _ "," _ b:number _ ("," _ a:numberPercentage _)? ")" {
+  / "rgba(" _ r:number _ "," _ g:number _ "," _ b:number "," _ a:numberPercentage ")" {
     return [r, g, b, a];
+  }
+  / "rgba(" _ r:percentage _ "," _ g:percentage _ "," _ b:percentage _ ")" {
+    return [r * 255, g * 255, b * 255, 1];
+  }
+  / "rgba(" _ r:number _ "," _ g:number _ "," _ b:number ")" {
+    return [r, g, b, 1];
   }
   / "rgb(" _ r:percentage _ "," _ g:percentage _ "," _ b:percentage _ ")" {
     return [r * 255, g * 255, b * 255, 1];
   }
   / "rgb(" _ r:number _ "," _ g:number _ "," _ b:number _ ")" {
     return [r, g, b, 1];
+  }
+  / "hsl" "a"? "(" _ h:number _ "," _ s:percentage _ "," _ l:percentage _ a:("," _ numberPercentage _)? ")" {
+    return hsla2rgb(h, s, l, a == null ? 1 : a[2]);
   }
   / namedColor
 
